@@ -38,6 +38,9 @@
             outline: none;
             resize: none;
         }
+        textarea:focus {
+            border-color: #007bff;
+        }
 
         /* Button Styling */
         button { 
@@ -54,6 +57,13 @@
 
         button:hover {
             background: #0056b3; 
+        }
+
+        /* Loading Indicator */
+        .loading {
+            font-size: 14px;
+            color: #ffcc00;
+            display: none; /* Hidden by default */
         }
 
         /* Output Section */
@@ -93,23 +103,45 @@
 <body>
 
     <h2>Python Code Analyzer & Explainer</h2>
-    <textarea id="codeInput" placeholder="Write or paste your Python code here..."></textarea><br>
+    <textarea id="codeInput" placeholder="Write or paste your Python code here..." onfocus="clearPlaceholder(this)"></textarea><br>
     <button onclick="sendCode()">Explain Code</button>
     
+    <p class="loading" id="loadingText">Processing... Please wait.</p>
+
     <h3>Explanation:</h3>
     <pre id="output">No code analyzed yet.</pre>
 
     <script>
+        function clearPlaceholder(element) {
+            if (element.value === '') {
+                element.placeholder = '';
+            }
+        }
+
         function sendCode() {
             let code = document.getElementById("codeInput").value;
-            fetch("http://127.0.0.1:5000/explain", {
+            if (!code.trim()) {
+                alert("Please enter some Python code before analyzing.");
+                return;
+            }
+
+            document.getElementById("loadingText").style.display = "block"; // Show loading
+
+            fetch("/explain", {  // Auto-detects deployment URL
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ code: code })
             })
             .then(response => response.json())
-            .then(data => document.getElementById("output").innerText = data.explanation)
-            .catch(error => console.error("Error:", error));
+            .then(data => {
+                document.getElementById("output").innerText = data.explanation;
+                document.getElementById("loadingText").style.display = "none"; // Hide loading
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("output").innerText = "Error fetching explanation. Try again!";
+                document.getElementById("loadingText").style.display = "none"; // Hide loading
+            });
         }
     </script>
 
