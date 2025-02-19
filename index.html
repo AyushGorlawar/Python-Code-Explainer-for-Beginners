@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Code Explainer</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://static.vecteezy.com/system/resources/thumbnails/010/332/153/small/code-flat-color-outline-icon-free-png.png">
+
+    <!-- Styling -->
+    <style>
+        /* Global Styles */
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background-color: #121212; 
+            color: #ffffff; 
+            text-align: center; 
+            padding: 20px; 
+            margin: 0;
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        /* Textarea Styling */
+        textarea { 
+            width: 80%; 
+            height: 200px; 
+            font-size: 16px; 
+            background: #1e1e1e; 
+            color: #fff; 
+            border: 1px solid #444; 
+            border-radius: 8px;
+            padding: 10px; 
+            outline: none;
+            resize: none;
+        }
+
+        /* Button Styling */
+        button { 
+            padding: 12px 20px; 
+            font-size: 16px; 
+            border: none; 
+            background: #007bff; 
+            color: white; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #0056b3; 
+        }
+
+        /* Output Section */
+        pre { 
+            background: #1e1e1e; 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: left; 
+            width: 80%; 
+            margin: auto; 
+            border-left: 5px solid #007bff;
+            font-size: 14px;
+            overflow-x: auto;
+            max-height: 300px; /* Set a max height for long explanations */
+            overflow-y: auto; /* Enable scrolling for long text */
+        }
+
+        /* Mobile-Friendly Design */
+        @media (max-width: 768px) {
+            textarea, pre {
+                width: 95%;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            button {
+                width: 90%; /* Full-width buttons for better mobile UX */
+                padding: 15px;
+                font-size: 18px;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+    <h2>Python Code Analyzer & Explainer</h2>
+    <textarea id="codeInput" placeholder="Write or paste your Python code here..."></textarea><br>
+    <button onclick="sendCode()">Explain Code</button>
+    
+    <h3>Explanation:</h3>
+    <pre id="output">No code analyzed yet.</pre>
+
+    <script>
+        function sendCode() {
+            let code = document.getElementById("codeInput").value;
+            fetch("http://127.0.0.1:5000/explain", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ code: code })
+            })
+            .then(response => response.json())
+            .then(data => document.getElementById("output").innerText = data.explanation)
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+</body>
+</html>
