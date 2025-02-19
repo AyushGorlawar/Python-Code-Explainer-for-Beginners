@@ -120,4 +120,3 @@ If you like this project, give it a ⭐ on GitHub!
 
 ---
 
-This **README.md** is beginner-friendly and perfect for GitHub. Just update the **repo link** and **live demo URL** after deployment. 🚀
