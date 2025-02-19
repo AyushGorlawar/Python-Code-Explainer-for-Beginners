@@ -111,7 +111,7 @@ Want to improve this project? Feel free to **fork** and submit a PR!
 ---
 
 ## 📜 **License**  
-This project is licensed under the ****.  
+This project is licensed under the **MIT Licensed**.  
 
 ---
 
